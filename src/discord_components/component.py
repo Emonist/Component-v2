@@ -415,9 +415,8 @@ class ComponentMessage:
     
     def to_view(self) -> ui.View:
         view = ui.View(timeout=self._timeout)
-        for row in self._components:
-            action_row = ui.View()
-            
+        
+        for row_idx, row in enumerate(self._components):
             for component in row.components:
                 if isinstance(component, Button):
                     button = ui.Button(
@@ -427,13 +426,14 @@ class ComponentMessage:
                         url=component.url,
                         custom_id=component.custom_id,
                         disabled=component.disabled,
-                        row=component.row or 0
+                        row=row_idx
                     )
                     
                     if component.custom_id and component.custom_id in self._listeners:
                         button.callback = self._listeners[component.custom_id]
                     
-                    action_row.add_item(button)
+                    view.add_item(button)
+                
                 elif isinstance(component, SelectMenu):
                     select = ui.Select(
                         custom_id=component.custom_id,
@@ -450,15 +450,13 @@ class ComponentMessage:
                                 default=opt.default
                             ) for opt in component.options
                         ],
-                        row=component.row or 0
+                        row=row_idx
                     )
                     
                     if component.custom_id in self._listeners:
                         select.callback = self._listeners[component.custom_id]
                     
-                    action_row.add_item(select)
-            
-            view.add_item(action_row)
+                    view.add_item(select)
         
         self._view = view
         return view
