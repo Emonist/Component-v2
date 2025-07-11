@@ -14,6 +14,10 @@ __all__ = (
     'Button',
     'SelectMenu',
     'TextInput',
+    'ChannelSelect',
+    'RoleSelect',
+    'UserSelect',
+    'MentionableSelect',
     'Component',
     'ComponentMessage',
     'ComponentContext',
@@ -220,6 +224,199 @@ class SelectMenu(Component):
             disabled=disabled
         )
 
+class ChannelSelect(Component):
+    def __init__(
+        self,
+        *,
+        custom_id: str,
+        channel_types: Optional[List[discord.ChannelType]] = None,
+        placeholder: Optional[str] = None,
+        min_values: int = 1,
+        max_values: int = 1,
+        disabled: bool = False,
+        row: Optional[int] = None
+    ):
+        super().__init__(custom_id=custom_id, disabled=disabled)
+        self.channel_types = channel_types or []
+        self.placeholder = placeholder
+        self.min_values = min_values
+        self.max_values = max_values
+        self.row = row
+    
+    def to_dict(self) -> Dict[str, Any]:
+        data = {
+            'type': 8,
+            'custom_id': self.custom_id,
+            'channel_types': [ct.value for ct in self.channel_types],
+            'min_values': self.min_values,
+            'max_values': self.max_values,
+            'disabled': self.disabled
+        }
+        
+        if self.placeholder is not None:
+            data['placeholder'] = self.placeholder
+        
+        return data
+    
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'ChannelSelect':
+        custom_id = data['custom_id']
+        channel_types = [discord.ChannelType(ct) for ct in data.get('channel_types', [])]
+        placeholder = data.get('placeholder')
+        min_values = data.get('min_values', 1)
+        max_values = data.get('max_values', 1)
+        disabled = data.get('disabled', False)
+        
+        return cls(
+            custom_id=custom_id,
+            channel_types=channel_types,
+            placeholder=placeholder,
+            min_values=min_values,
+            max_values=max_values,
+            disabled=disabled
+        )
+
+class RoleSelect(Component):
+    def __init__(
+        self,
+        *,
+        custom_id: str,
+        placeholder: Optional[str] = None,
+        min_values: int = 1,
+        max_values: int = 1,
+        disabled: bool = False,
+        row: Optional[int] = None
+    ):
+        super().__init__(custom_id=custom_id, disabled=disabled)
+        self.placeholder = placeholder
+        self.min_values = min_values
+        self.max_values = max_values
+        self.row = row
+    
+    def to_dict(self) -> Dict[str, Any]:
+        data = {
+            'type': 6,
+            'custom_id': self.custom_id,
+            'min_values': self.min_values,
+            'max_values': self.max_values,
+            'disabled': self.disabled
+        }
+        
+        if self.placeholder is not None:
+            data['placeholder'] = self.placeholder
+        
+        return data
+    
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'RoleSelect':
+        custom_id = data['custom_id']
+        placeholder = data.get('placeholder')
+        min_values = data.get('min_values', 1)
+        max_values = data.get('max_values', 1)
+        disabled = data.get('disabled', False)
+        
+        return cls(
+            custom_id=custom_id,
+            placeholder=placeholder,
+            min_values=min_values,
+            max_values=max_values,
+            disabled=disabled
+        )
+
+class UserSelect(Component):
+    def __init__(
+        self,
+        *,
+        custom_id: str,
+        placeholder: Optional[str] = None,
+        min_values: int = 1,
+        max_values: int = 1,
+        disabled: bool = False,
+        row: Optional[int] = None
+    ):
+        super().__init__(custom_id=custom_id, disabled=disabled)
+        self.placeholder = placeholder
+        self.min_values = min_values
+        self.max_values = max_values
+        self.row = row
+    
+    def to_dict(self) -> Dict[str, Any]:
+        data = {
+            'type': 5,
+            'custom_id': self.custom_id,
+            'min_values': self.min_values,
+            'max_values': self.max_values,
+            'disabled': self.disabled
+        }
+        
+        if self.placeholder is not None:
+            data['placeholder'] = self.placeholder
+        
+        return data
+    
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'UserSelect':
+        custom_id = data['custom_id']
+        placeholder = data.get('placeholder')
+        min_values = data.get('min_values', 1)
+        max_values = data.get('max_values', 1)
+        disabled = data.get('disabled', False)
+        
+        return cls(
+            custom_id=custom_id,
+            placeholder=placeholder,
+            min_values=min_values,
+            max_values=max_values,
+            disabled=disabled
+        )
+
+class MentionableSelect(Component):
+    def __init__(
+        self,
+        *,
+        custom_id: str,
+        placeholder: Optional[str] = None,
+        min_values: int = 1,
+        max_values: int = 1,
+        disabled: bool = False,
+        row: Optional[int] = None
+    ):
+        super().__init__(custom_id=custom_id, disabled=disabled)
+        self.placeholder = placeholder
+        self.min_values = min_values
+        self.max_values = max_values
+        self.row = row
+    
+    def to_dict(self) -> Dict[str, Any]:
+        data = {
+            'type': 7,
+            'custom_id': self.custom_id,
+            'min_values': self.min_values,
+            'max_values': self.max_values,
+            'disabled': self.disabled
+        }
+        
+        if self.placeholder is not None:
+            data['placeholder'] = self.placeholder
+        
+        return data
+    
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> 'MentionableSelect':
+        custom_id = data['custom_id']
+        placeholder = data.get('placeholder')
+        min_values = data.get('min_values', 1)
+        max_values = data.get('max_values', 1)
+        disabled = data.get('disabled', False)
+        
+        return cls(
+            custom_id=custom_id,
+            placeholder=placeholder,
+            min_values=min_values,
+            max_values=max_values,
+            disabled=disabled
+        )
+
 class TextInput(Component):
     def __init__(
         self,
@@ -308,12 +505,20 @@ class ActionRow:
         for component_data in data['components']:
             component_type = component_data['type']
             
-            if component_type == 2:  
+            if component_type == 2:  # Button
                 components.append(Button.from_dict(component_data))
-            elif component_type == 3:  
+            elif component_type == 3:  # SelectMenu
                 components.append(SelectMenu.from_dict(component_data))
-            elif component_type == 4: 
+            elif component_type == 4:  # TextInput
                 components.append(TextInput.from_dict(component_data))
+            elif component_type == 5:  # UserSelect
+                components.append(UserSelect.from_dict(component_data))
+            elif component_type == 6:  # RoleSelect
+                components.append(RoleSelect.from_dict(component_data))
+            elif component_type == 7:  # MentionableSelect
+                components.append(MentionableSelect.from_dict(component_data))
+            elif component_type == 8:  # ChannelSelect
+                components.append(ChannelSelect.from_dict(component_data))
             else:
                 raise ValueError(f'Unknown component type: {component_type}')
         
@@ -457,6 +662,67 @@ class ComponentMessage:
                         select.callback = self._listeners[component.custom_id]
                     
                     view.add_item(select)
+                
+                elif isinstance(component, ChannelSelect):
+                    channel_select = ui.ChannelSelect(
+                        custom_id=component.custom_id,
+                        placeholder=component.placeholder,
+                        min_values=component.min_values,
+                        max_values=component.max_values,
+                        disabled=component.disabled,
+                        channel_types=component.channel_types,
+                        row=row_idx
+                    )
+                    
+                    if component.custom_id in self._listeners:
+                        channel_select.callback = self._listeners[component.custom_id]
+                    
+                    view.add_item(channel_select)
+                
+                elif isinstance(component, RoleSelect):
+                    role_select = ui.RoleSelect(
+                        custom_id=component.custom_id,
+                        placeholder=component.placeholder,
+                        min_values=component.min_values,
+                        max_values=component.max_values,
+                        disabled=component.disabled,
+                        row=row_idx
+                    )
+                    
+                    if component.custom_id in self._listeners:
+                        role_select.callback = self._listeners[component.custom_id]
+                    
+                    view.add_item(role_select)
+                
+                elif isinstance(component, UserSelect):
+                    user_select = ui.UserSelect(
+                        custom_id=component.custom_id,
+                        placeholder=component.placeholder,
+                        min_values=component.min_values,
+                        max_values=component.max_values,
+                        disabled=component.disabled,
+                        row=row_idx
+                    )
+                    
+                    if component.custom_id in self._listeners:
+                        user_select.callback = self._listeners[component.custom_id]
+                    
+                    view.add_item(user_select)
+                
+                elif isinstance(component, MentionableSelect):
+                    mentionable_select = ui.MentionableSelect(
+                        custom_id=component.custom_id,
+                        placeholder=component.placeholder,
+                        min_values=component.min_values,
+                        max_values=component.max_values,
+                        disabled=component.disabled,
+                        row=row_idx
+                    )
+                    
+                    if component.custom_id in self._listeners:
+                        mentionable_select.callback = self._listeners[component.custom_id]
+                    
+                    view.add_item(mentionable_select)
         
         self._view = view
         return view
@@ -563,7 +829,7 @@ def component_handler(bot):
             custom_id = None
             component = None
             
-            if interaction.data.get('component_type') == 2:  
+            if interaction.data.get('component_type') == 2:  # Button
                 custom_id = interaction.data['custom_id']
                 component = Button.from_dict({
                     'type': 2,
@@ -573,12 +839,52 @@ def component_handler(bot):
                     'custom_id': custom_id,
                     'disabled': False
                 })
-            elif interaction.data.get('component_type') == 3:  
+            elif interaction.data.get('component_type') == 3:  # SelectMenu
                 custom_id = interaction.data['custom_id']
                 component = SelectMenu.from_dict({
                     'type': 3,
                     'custom_id': custom_id,
                     'options': [],
+                    'values': interaction.data.get('values', []),
+                    'min_values': interaction.data.get('min_values', 1),
+                    'max_values': interaction.data.get('max_values', 1),
+                    'disabled': False
+                })
+            elif interaction.data.get('component_type') == 5:  # UserSelect
+                custom_id = interaction.data['custom_id']
+                component = UserSelect.from_dict({
+                    'type': 5,
+                    'custom_id': custom_id,
+                    'values': interaction.data.get('values', []),
+                    'min_values': interaction.data.get('min_values', 1),
+                    'max_values': interaction.data.get('max_values', 1),
+                    'disabled': False
+                })
+            elif interaction.data.get('component_type') == 6:  # RoleSelect
+                custom_id = interaction.data['custom_id']
+                component = RoleSelect.from_dict({
+                    'type': 6,
+                    'custom_id': custom_id,
+                    'values': interaction.data.get('values', []),
+                    'min_values': interaction.data.get('min_values', 1),
+                    'max_values': interaction.data.get('max_values', 1),
+                    'disabled': False
+                })
+            elif interaction.data.get('component_type') == 7:  # MentionableSelect
+                custom_id = interaction.data['custom_id']
+                component = MentionableSelect.from_dict({
+                    'type': 7,
+                    'custom_id': custom_id,
+                    'values': interaction.data.get('values', []),
+                    'min_values': interaction.data.get('min_values', 1),
+                    'max_values': interaction.data.get('max_values', 1),
+                    'disabled': False
+                })
+            elif interaction.data.get('component_type') == 8:  # ChannelSelect
+                custom_id = interaction.data['custom_id']
+                component = ChannelSelect.from_dict({
+                    'type': 8,
+                    'custom_id': custom_id,
                     'values': interaction.data.get('values', []),
                     'min_values': interaction.data.get('min_values', 1),
                     'max_values': interaction.data.get('max_values', 1),
