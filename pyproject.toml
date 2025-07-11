@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "discord-components"
+version = "1.0.0"
+description = "Advanced Discord component system for discord.py"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "Emonist", email = "chamarhuh@email.com"},
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "discord.py>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Emonist/Component-v2"
+Repository = "https://github.com/Emonist/Component-v2"
+Issues = "https://github.com/Emonist/Component-v2/issues"
+
+[tool.setuptools]
+packages = ["discord_components"]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+"*" = ["*.pyi", "*.json", "*.md"]
